@@ -15,7 +15,7 @@ def get_page(link, master_df):
     all_homes = property_page.findAll("h4", {'class': 'card-title'})
     all_homes_links = find_links(all_homes)
     # open page with individual home information
-    for home in all_homes_links:
+    for home in all_homes_links[6:]:
         home_to_open = "https://blockshopper.com" + home
         page_driver = webdriver.Chrome(ChromeDriverManager().install())
         page_driver.get(home_to_open)
@@ -56,89 +56,90 @@ def create_property_row(property_page, community_info, master_df):
         latin = [community_info[5].text.strip()]
         black = [community_info[6].text.strip()]
         native = [community_info[7].text.strip()]
-        pacific_islander = [community_info[8].text.strip()]
-        asian = [community_info[9].text.strip()]
+        pacific_islander =[community_info[8].text.strip()]
+        asian= [community_info[9].text.strip()]
         us_representatives = [community_info[10].text.strip()]
-        state_senator = [community_info[11].text.strip()]
+        state_senator =[community_info[11].text.strip()]
         state_rep = [community_info[12].text.strip()]
-        neighbourhood = property_page.findAll("a", {"class": "col-xs-6 col-sm-4 col-md-6 col-lg-6"})[0].text.strip()
-        lot_size = property_page.find(text="Lot Size").findNext('p').contents[0].strip()
-        acre_tax = property_page.find(text="Tax $/Acre").findNext('p').contents[0].strip()
-        home_size = property_page.find(text="Home Size").findNext('p').contents[0].strip()
-        bedrooms = property_page.find(text="Beds").findNext('p').contents[0].strip()
-        bathrooms = property_page.find(text="Baths").findNext('p').contents[0].strip()
-        built_year = property_page.find(text="Built").findNext('p').contents[0].strip()
+        neighbourhood = [property_page.findAll("a", {"class": "col-xs-6 col-sm-4 col-md-6 col-lg-6"})[0].text.strip()]
+        lot_size = [property_page.find(text="Lot Size").findNext('p').contents[0].strip()]
+        acre_tax = [property_page.find(text="Tax $/Acre").findNext('p').contents[0].strip()]
+        home_size = [property_page.find(text="Home Size").findNext('p').contents[0].strip()]
+        bedrooms = [property_page.find(text="Beds").findNext('p').contents[0].strip()]
+        bathrooms = [property_page.find(text="Baths").findNext('p').contents[0].strip()]
+        built_year = [property_page.find(text="Built").findNext('p').contents[0].strip()]
         address_details = property_page.find_all("h2")[0].text.split(',')
 
     except:
         print("not a correct property format")
-        address = ""
-        owner = ""
-        purchase_price = ""
-        property_tax = ""
-        median_income = ""
-        white = ""
-        latin = ""
-        black = ""
-        native = ""
-        pacific_islander = ""
-        asian = ""
-        us_representatives = ""
-        state_senator = ""
-        state_rep = ""
-        neighbourhood = ""
-        lot_size = ""
-        acre_tax = ""
-        home_size = ""
-        bedrooms = ""
-        bathrooms = ""
-        built_year = ""
-        address_details = ""
+        address = [""]
+        owner = [""]
+        purchase_price = [""]
+        property_tax = [""]
+        median_income = [""]
+        white = [""]
+        latin = [""]
+        black = [""]
+        native = [""]
+        pacific_islander =[""]
+        asian= [""]
+        us_representatives = [""]
+        state_senator =[""]
+        state_rep = [""]
+        neighbourhood = [""]
+        lot_size = [""]
+        acre_tax = [""]
+        home_size = [""]
+        bedrooms = [""]
+        bathrooms = [""]
+        built_year = [""]
+        address_details = [""]
 
     try:
-        county = address_details[0]
+        county = [address_details[0]]
     except:
         print("no county")
-        county = ""
+        county =[""]
     try:
-        city = address_details[1]
+        city = [address_details[1]]
     except:
         print("no city")
-        city = ""
+        city =[""]
     try:
-        postal = address_details[2]
+        postal = [address_details[2]]
     except:
         print("no postal")
-        postal = ""
+        postal = [""]
 
     try:
-        middle_school = property_page.find(text="Middle School:").findNext('strong').text.strip()
+        middle_school = [property_page.find(text="Middle School:").findNext('strong').text.strip()]
     except:
         print("missing middle school")
-        middle_school = ""
+        middle_school = [""]
 
     try:
-        high_school = property_page.find(text="High School:").findNext('strong').text.strip()
+        high_school = [property_page.find(text="High School:").findNext('strong').text.strip()]
     except:
         print("missing high school")
-        high_school = ""
+        high_school = [""]
 
     try:
-        elementary_school = property_page.find(text="Elementary School:").findNext('strong').text.strip()
+        elementary_school = [property_page.find(text="Elementary School:").findNext('strong').text.strip()]
     except:
         print("missing elementary school")
-        elementary_school = ""
+        elementary_school = [""]
 
-    community_dict = {'address': address, 'owner': owner,
-    'purchase_price': purchase_price, 'property_tax': property_tax,
-    'median_income':median_income, 'white':white, 'latin':latin, 'black':black,
-    'native':native, 'pacific_islander':pacific_islander, 'asian':asian,
-    'us_house_of_rep':us_representatives, 'state_senator':state_senator,
-    'state_rep':state_rep, 'elementary_school':elementary_school,
-    'middle_school':middle_school,'high_school':high_school,
-    'neighbourhood':neighbourhood,'bedrooms':bedrooms, 'bathrooms':bathrooms,
-    "built_year":built_year, "county":county, 'city':city, 'postal':postal,
-    'lot_size': lot_size, 'tax_per_acre': acre_tax, 'home_size':home_size}
+    community_dict = {'address': address, 'owner': owner, 'purchase_price': purchase_price,
+                 'property_tax': property_tax, 'median_income':median_income,
+                 'white':white, 'latin':latin, 'black':black, 'native':native, 'pacific_islander':pacific_islander,
+                 'asian':asian, 'us_house_of_rep':us_representatives, 'state_senator':state_senator,
+                 'state_rep':state_rep, 'elementary_school':elementary_school, 'middle_school':middle_school,
+                 'high_school':high_school, 'neighbourhood':neighbourhood,
+                 'bedrooms':bedrooms, 'bathrooms':bathrooms, "built_year":built_year,
+                     "county":county, 'city':city,
+                     'postal':postal, 'lot_size': lot_size, 'tax_per_acre': acre_tax,
+                      'home_size':home_size
+                     }
     print(community_dict)
     property_df = pd.DataFrame(community_dict)
     master_df = master_df.append(property_df)
@@ -165,4 +166,4 @@ if __name__ == "__main__":
         master_df.to_csv("scraped_property_sf.csv", mode='w', header=True)
         print("finished " + link)
 
-    master_df.to_csv("scraped_property_sf.csv")
+    master_df.to_csv("scraped_property_sf_after_11th.csv")
