@@ -9,6 +9,7 @@ def get_page(link, master_df):
     driver = webdriver.Chrome(ChromeDriverManager().install())
     driver.get(link)
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
     response = opener.open(link, timeout=30)
     property_page = BeautifulSoup(response, "html.parser")
     all_homes = property_page.findAll("h4", {'class': 'card-title'})
@@ -161,6 +162,7 @@ if __name__ == "__main__":
         to_open = "https://blockshopper.com" + link
         print("opening " + link)
         master_df = get_page(to_open, master_df)
+        master_df.to_csv("scraped_property_sf.csv", mode='w', header=True)
         print("finished " + link)
 
     master_df.to_csv("scraped_property_sf.csv")
