@@ -154,7 +154,7 @@ if __name__ == "__main__":
     home_page = BeautifulSoup(homepage_response, "html.parser")
     all_items = home_page.findAll("td", {'class': None})
     all_links = []
-    for item in all_items:
+    for item in all_items[4:]:
         link = item.findNext('a')['href']
         if link not in all_links:
             all_links.append(link)
@@ -163,7 +163,7 @@ if __name__ == "__main__":
         to_open = "https://blockshopper.com" + link
         print("opening " + link)
         master_df = get_page(to_open, master_df)
-        master_df.to_csv("scraped_property_sf.csv", mode='w', header=True)
+        master_df.to_csv("scraped_property_sf_after_10th.csv", mode='w', header=True)
         print("finished " + link)
 
-    master_df.to_csv("scraped_property_sf_after_11th.csv")
+    master_df.to_csv("scraped_property_sf_after_10th.csv")
