@@ -15,7 +15,7 @@ def get_page(link, master_df):
     all_homes = property_page.findAll("h4", {'class': 'card-title'})
     all_homes_links = find_links(all_homes)
     # open page with individual home information
-    for home in all_homes_links[6:]:
+    for home in all_homes_links:
         home_to_open = "https://blockshopper.com" + home
         page_driver = webdriver.Chrome(ChromeDriverManager().install())
         page_driver.get(home_to_open)
@@ -25,6 +25,7 @@ def get_page(link, master_df):
         community_info = ind_property_page.findAll("p", {"class": "info-data"})
         master_df = create_property_row(ind_property_page, community_info, master_df)
         page_driver.close()
+        page_driver.quit()
     try:
         print("trying to find next page")
         next_page = property_page.find_all("li",{"class":"page-item next_page"})[0].find("a")["href"]
@@ -32,6 +33,7 @@ def get_page(link, master_df):
         next_page_link = "https://blockshopper.com" + next_page
         print("about to recursively go to next page")
         driver.close()
+        driver.quit()
         return get_page(next_page_link, master_df)
     except:
         print("reached the last page")
@@ -154,16 +156,16 @@ if __name__ == "__main__":
     home_page = BeautifulSoup(homepage_response, "html.parser")
     all_items = home_page.findAll("td", {'class': None})
     all_links = []
-    for item in all_items[4:]:
+    for item in all_items:
         link = item.findNext('a')['href']
         if link not in all_links:
             all_links.append(link)
 
-    for link in all_links:
+    for link in all_links[98:]:
         to_open = "https://blockshopper.com" + link
         print("opening " + link)
         master_df = get_page(to_open, master_df)
-        master_df.to_csv("scraped_property_sf_after_10th.csv", mode='w', header=True)
+        master_df.to_csv("scraped_property_sf_after_allison_st.csv", mode='w', header=True)
         print("finished " + link)
 
-    master_df.to_csv("scraped_property_sf_after_10th.csv")
+    master_df.to_csv("scraped_property_sf_after_allison_st.csv")
