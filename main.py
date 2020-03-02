@@ -149,23 +149,29 @@ def create_property_row(property_page, community_info, master_df):
 
 if __name__ == "__main__":
 
-    sf_home_page = 'https://blockshopper.com/ca/san-francisco-county/cities/san-francisco'
+    sf_home_page = 'https://blockshopper.com/ca/san-francisco-county/cities/san-francisco?page=2'
     opener = build_opener(HTTPCookieProcessor())
     homepage_response = opener.open(sf_home_page, timeout=30)
     master_df = pd.DataFrame()
     home_page = BeautifulSoup(homepage_response, "html.parser")
-    all_items = home_page.findAll("td", {'class': None})
-    all_links = []
-    for item in all_items:
-        link = item.findNext('a')['href']
-        if link not in all_links:
-            all_links.append(link)
+    while home_page.find_all("li", {"class":"page-item next_page"})[0].find("a")["href"]:
+        next_button = home_page.find_all("li", {"class":"page-item next_page"})[0].find("a")["href"]
 
-    for link in all_links[98:]:
-        to_open = "https://blockshopper.com" + link
-        print("opening " + link)
-        master_df = get_page(to_open, master_df)
-        master_df.to_csv("scraped_property_sf_after_allison_st.csv", mode='w', header=True)
-        print("finished " + link)
+        all_items = home_page.findAll("td", {'class': None})
+        all_links = []
+        for item in all_items:
+            link = item.findNext('a')['href']
+            if link not in all_links:
+                all_links.append(link)
 
-    master_df.to_csv("scraped_property_sf_after_allison_st.csv")
+        for link in all_links[9:]:
+            to_open = "https://blockshopper.com" + link
+            print("opening " + link)
+            master_df = get_page(to_open, master_df)
+            master_df.to_csv("scraped_property_sf_2nd_page.csv", mode='w', header=True)
+            print("finished " + link)
+            master_df.to_csv("scraped_property_sf_2nd_page.csv")
+
+        next_page_url = "https://blockshopper.com" + next_button
+        next_homepage_response = opener.open(next_page_url, timeout=30)
+        home_page = BeautifulSoup(next_homepage_response, "html.parser")
