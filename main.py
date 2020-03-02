@@ -164,7 +164,7 @@ if __name__ == "__main__":
             if link not in all_links:
                 all_links.append(link)
 
-        for link in all_links[9:]:
+        for link in all_links[:]:
             to_open = "https://blockshopper.com" + link
             print("opening " + link)
             master_df = get_page(to_open, master_df)
