@@ -164,13 +164,13 @@ if __name__ == "__main__":
             if link not in all_links:
                 all_links.append(link)
 
-        for link in all_links[:]:
+        for link in all_links[57:]:
             to_open = "https://blockshopper.com" + link
             print("opening " + link)
             master_df = get_page(to_open, master_df)
-            master_df.to_csv("scraped_property_sf_2nd_page.csv", mode='w', header=True)
+            master_df.to_csv("scraped_property_sf_balboa.csv", mode='w', header=True)
             print("finished " + link)
-            master_df.to_csv("scraped_property_sf_2nd_page.csv")
+            master_df.to_csv("scraped_property_sf_balboa.csv")
 
         next_page_url = "https://blockshopper.com" + next_button
         next_homepage_response = opener.open(next_page_url, timeout=30)
